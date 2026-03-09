@@ -11,6 +11,7 @@
  * Supported services:
  * - Google Drive: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
  * - Box: BOX_CLIENT_ID, BOX_CLIENT_SECRET
+ * - OneDrive: ONEDRIVE_CLIENT_ID (public client, no secret needed - uses PKCE)
  * 
  * Usage:
  *   GOOGLE_CLIENT_ID=xxx GOOGLE_CLIENT_SECRET=yyy BOX_CLIENT_ID=aaa BOX_CLIENT_SECRET=bbb node scripts/inject-google-credentials.js
@@ -97,6 +98,36 @@ function injectBoxCredentials() {
   console.log('[BoxCredentials] Client ID:', clientId.substring(0, 20) + '...');
 }
 
+function injectOneDriveCredentials() {
+  const credPath = path.join(SERVICES_DIR, 'onedrive-credentials.json');
+  const clientId = process.env.ONEDRIVE_CLIENT_ID;
+
+  if (!clientId) {
+    // Check if existing file is valid
+    if (fs.existsSync(credPath)) {
+      try {
+        const existing = JSON.parse(fs.readFileSync(credPath, 'utf-8'));
+        if (existing.client_id && !existing.client_id.startsWith('PLACEHOLDER')) {
+          console.log('[OneDriveCredentials] ✅ Existing credentials file is valid');
+          return;
+        }
+      } catch (e) {}
+    }
+    console.log('[OneDriveCredentials] ⚠️  No credentials configured - OneDrive backup disabled');
+    return;
+  }
+
+  // OneDrive uses PKCE (public client) - only client_id needed, no client_secret
+  const credentials = {
+    client_id: clientId
+  };
+
+  fs.writeFileSync(credPath, JSON.stringify(credentials, null, 2));
+  console.log('[OneDriveCredentials] ✅ Credentials injected successfully');
+  console.log('[OneDriveCredentials] Client ID:', clientId.substring(0, 20) + '...');
+}
+
 // Inject all credentials
 injectGoogleCredentials();
 injectBoxCredentials();
+injectOneDriveCredentials();

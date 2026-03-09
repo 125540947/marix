@@ -32,6 +32,9 @@
     "synopsis": "Modern SSH/SFTP/FTP Client",
     "description": "Marix - Modern Zero-Knowledge SSH Client with SFTP, FTP, RDP, WSS support"
   },
+  "rpm": {
+    "fpm": ["--rpm-rpmbuild-define", "_build_id_links none"]
+  },
   "win": {
     "icon": "icon/icon.ico",
     "target": [

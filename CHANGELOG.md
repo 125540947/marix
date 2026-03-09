@@ -2,6 +2,21 @@
 
 All notable changes to Marix SSH Client will be documented in this file.
 
+## [1.0.22] - 2026-03-09
+
+### Fixed
+- **RPM Install Conflict** (Issue [#12](https://github.com/marixdev/marix/issues/12)): Fixed RPM package conflicting with other Electron apps (e.g. Trilium) due to shared `.build-id` symlinks in `/usr/lib/.build-id/`
+  - Added `_build_id_links none` rpmbuild define to electron-builder RPM config
+  - Eliminates cross-package file conflicts on Fedora/RHEL-based distros
+
+### Security
+- **Critical**: Upgraded `basic-ftp` from 5.1.0 to 5.2.0 — fixes Path Traversal vulnerability in `downloadToDir()` ([GHSA-5rq4-664w-9x2c](https://github.com/advisories/GHSA-5rq4-664w-9x2c))
+- **High**: Added npm override for `serialize-javascript` ^7.0.4 — fixes RCE via `RegExp.flags` ([GHSA-5c6j-r48x-rmvq](https://github.com/advisories/GHSA-5c6j-r48x-rmvq))
+- **High**: Added npm override for `minimatch` ^10.2.4 — fixes multiple ReDoS vulnerabilities
+- **High**: Added npm override for `@isaacs/brace-expansion` ^5.0.1 — fixes Uncontrolled Resource Consumption
+- **Moderate**: Added npm override for `qs` ^6.15.0 — fixes `arrayLimit` bypass denial of service
+- Updated CI security audit workflow with clearer documentation of accepted build-time risks
+
 ## [1.0.21] - 2026-02-27
 
 ### Fixed

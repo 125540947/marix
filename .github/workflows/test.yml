@@ -175,13 +175,13 @@ jobs:
         run: npm ci
 
       # Note: Using audit-level=critical because:
-      # - tar@6 is required by @electron/rebuild for build process
-      # - tar@6 has "high" severity path traversal vulns, but these only affect
-      #   extracting untrusted archives, which doesn't apply to our build process
-      # - tar@7 is ESM-only and breaks @electron/rebuild on Node.js 22
+      # - tar@6 is required by @electron/rebuild and electron-builder (build-time only)
+      # - tar@7 is ESM-only and breaks @electron/rebuild's CJS import
+      # - @tootallnate/once is in sqlite3's node-gyp build chain (build-time only)
+      # - These vulnerable packages are NOT bundled into the production app
       - name: Run npm audit
         run: |
-          # Check for critical vulnerabilities only (high vulns from tar@6 are accepted)
+          # Check for critical vulnerabilities (runtime dependencies)
           CRITICAL_COUNT=$(npm audit --json 2>/dev/null | jq '.metadata.vulnerabilities.critical // 0')
           echo "Critical vulnerabilities: $CRITICAL_COUNT"
           if [ "$CRITICAL_COUNT" -gt 0 ]; then
@@ -190,7 +190,10 @@ jobs:
             exit 1
           fi
           echo "✅ No critical vulnerabilities"
-          # Show full audit for information
+          
+          # Show full audit for transparency (build-time tar/node-gyp vulns are accepted)
+          echo ""
+          echo "ℹ️  Remaining high/moderate vulns are in build-time dependencies only (tar, node-gyp chain)"
           npm audit || true
 
       - name: Check for known vulnerabilities (informational)
