@@ -2,49 +2,65 @@
 
 All notable changes to Marix SSH Client will be documented in this file.
 
-## [1.0.24] - 2026-04-08
+## [1.0.25] - 2026-04-08
 
-### Added
-- **Dropbox Cloud Support**: OAuth service and API for Dropbox backup integration
-- **Batch Import Service**: Import/export servers from CSV and JSON files
-- **Global Search Service**: Search across servers, groups, and tags with fuzzy matching
-- **Terminal Recording Service**: Record and replay terminal sessions
-- **SSH Tunnel Manager**: Graphical management of SSH port forwarding tunnels
-- **Theme Cache**: In-memory cache for theme loading performance
+### Added - Security
+- **SSH Key Manager**: Generate, import, manage SSH keys with encryption
+- **Audit Log Service**: Track all SSH operations with detailed logging
+
+### Added - Developer
+- **Code Snippets Service**: Store and manage reusable code snippets
+- **Built-in Templates**: Git, Docker, Systemd, Nginx, Database, Package Manager templates
+- **Variable Substitution**: Dynamic command templates with placeholders
+
+### Added - Network
+- **Load Balancer Service**: Round-robin, weighted, least-connections algorithms
+- **Health Check Service**: TCP, HTTP, HTTPS, SSH, Ping health checks
+
+### Added - Monitoring
+- **Server Monitoring Service**: Real-time CPU, memory, disk, network metrics
+- **Alert Rules**: Configurable thresholds for warnings and critical alerts
+- **Dashboard Data**: Historical metrics storage with configurable retention
 
 ### Features
-- **Batch Import**: 
-  - Import multiple servers from CSV/JSON
-  - Export servers to CSV/JSON
-  - Template generation for easy migration
+- **SSH Key Manager**:
+  - Generate RSA/ED25519/ECDA keys
+  - Import existing keys with passphrase
+  - Encrypted storage with master key
+  - Usage tracking and fingerprints
   
-- **Global Search**:
-  - Fuzzy search across all servers
-  - Search by name, host, username, group, tags, notes
-  - Quick search for fast lookup
+- **Audit Logging**:
+  - Log all SSH/file/server operations
+  - Query and filter by action, server, time
+  - Export logs, statistics
+  - Auto log rotation
   
-- **Terminal Recording**:
-  - Record SSH sessions
-  - Playback with speed control
-  - Export to text for sharing
+- **Code Snippets**:
+  - Create custom snippets
+  - Built-in command templates (6 categories)
+  - Variable placeholders for rendering
+  - Use count tracking
   
-- **SSH Tunnels**:
-  - Visual port forwarding management
-  - Auto-reconnect support
-  - Traffic statistics
-
-- **Dropbox Backup**:
-  - OAuth 2.0 integration
-  - Upload/download/delete operations
-  - Backup metadata management
-
-### Performance
-- Theme loading now cached in memory
-- Reduced file I/O on repeated theme switches
+- **Load Balancer**:
+  - Multiple algorithms
+  - Connection tracking
+  - Health status per endpoint
+  
+- **Health Checks**:
+  - Multiple check types
+  - Configurable intervals
+  - Callback notifications
+  - Consecutive failure tracking
+  
+- **Server Monitoring**:
+  - Real-time metrics collection
+  - 5 default alert rules
+  - Alert severity levels
+  - Acknowledgment workflow
 
 ### This is a fork with new features.
 
-## [1.0.23] - 2026-04-08
+## [1.0.24] - 2026-04-08
 
 ### Fixed
 - **RPM Install Conflict** (Issue [#12](https://github.com/marixdev/marix/issues/12)): Fixed RPM package conflicting with other Electron apps (e.g. Trilium) due to shared `.build-id` symlinks in `/usr/lib/.build-id/`
