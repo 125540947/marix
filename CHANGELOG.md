@@ -2,6 +2,21 @@
 
 All notable changes to Marix SSH Client will be documented in this file.
 
+## [1.0.23] - 2026-04-08
+
+### Added
+- **Theme Cache**: Added in-memory cache for theme loading to improve performance
+  - Themes are now cached after first load, eliminating repeated file I/O
+  - Reduces disk reads on repeated theme switches
+
+### Performance
+- **Theme Loading**: Optimized theme loading with Map-based cache
+  - First load: reads from disk
+  - Subsequent loads: served from memory cache
+
+### Security
+- **Dependency Updates**: Updated all dependencies to latest stable versions
+
 ## [1.0.22] - 2026-03-09
 
 ### Fixed

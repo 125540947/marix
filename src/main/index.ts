@@ -72,6 +72,9 @@ const githubAuthService = new GitHubAuthService();  // For GitHub OAuth
 const googleDriveService = getGoogleDriveService();  // For Google Drive backup
 const lanSharingService = new LANSharingService();  // For LAN sharing
 
+// Theme cache to avoid repeated file reads
+const themeCache = new Map<string, any>();
+
 function createAppMenu() {
   const template: any[] = [
     {
@@ -434,11 +437,19 @@ ipcMain.handle('themes:getList', async () => {
 
 ipcMain.handle('themes:getTheme', async (_, themeName: string) => {
   try {
+    // Check cache first
+    if (themeCache.has(themeName)) {
+      return { success: true, theme: themeCache.get(themeName) };
+    }
+    
     const themePath = path.join(__dirname, '../../theme', `${themeName}.json`);
     if (!fs.existsSync(themePath)) {
       return { success: false, error: 'Theme not found' };
     }
     const themeData = JSON.parse(fs.readFileSync(themePath, 'utf-8'));
+    
+    // Cache for future requests
+    themeCache.set(themeName, themeData);
     
     // Convert VSCode terminal color format to xterm.js format
     const colors = themeData.workbench?.colorCustomizations || themeData;
