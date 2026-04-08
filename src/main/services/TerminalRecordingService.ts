@@ -1,5 +1,6 @@
 /**
  * Terminal Recording Service
+import * as crypto from "crypto";
  * Record and replay terminal sessions
  */
 
@@ -57,7 +58,7 @@ class TerminalRecordingService {
       return this.currentRecording!.id;
     }
 
-    const sessionId = `rec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const sessionId = `rec_${Date.now()}_${randomBytes(8).toString('hex')}`;
     
     this.currentRecording = {
       id: sessionId,

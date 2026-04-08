@@ -4,6 +4,7 @@
  */
 
 import * as net from 'net';
+import * as crypto from 'crypto';
 
 interface TunnelConfig {
   id: string;
@@ -34,7 +35,7 @@ class SSHTunnelManager {
    * Create a new tunnel configuration
    */
   createTunnel(config: Omit<TunnelConfig, 'id' | 'active'>): TunnelConfig {
-    const id = `tunnel_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+    const id = `tunnel_${Date.now()}_${randomBytes(16).toString('hex')}`;
     
     const tunnel: TunnelConfig = {
       ...config,

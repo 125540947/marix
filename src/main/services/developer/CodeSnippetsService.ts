@@ -5,6 +5,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import * as crypto from 'crypto';
 import { app } from 'electron';
 
 interface CodeSnippet {
@@ -166,7 +167,7 @@ class CodeSnippetsService {
    * Create a new snippet
    */
   createSnippet(snippet: Omit<CodeSnippet, 'id' | 'createdAt' | 'useCount'>): CodeSnippet {
-    const id = `snippet_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+    const id = `snippet_${Date.now()}_${randomBytes(16).toString('hex')}`;
     
     const newSnippet: CodeSnippet = {
       ...snippet,

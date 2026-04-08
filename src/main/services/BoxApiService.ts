@@ -1,5 +1,6 @@
 import * as https from 'https';
 import { BoxOAuthService } from './BoxOAuthService';
+import * as crypto from "crypto";
 
 interface BoxUser {
   id: string;
@@ -183,7 +184,7 @@ export class BoxApiService {
       const fileContent = Buffer.from(encryptedData, 'utf-8');
       
       // Create multipart form data
-      const boundary = '----WebKitFormBoundary' + Math.random().toString(36).substring(2);
+      const boundary = '----WebKitFormBoundary' + randomBytes(8).toString('hex');
       const parts: Buffer[] = [];
       
       if (existingFile) {

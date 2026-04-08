@@ -2,6 +2,14 @@
 
 All notable changes to Marix SSH Client will be documented in this file.
 
+## [1.0.27] - 2026-04-08
+
+### Security Fixes
+- **ID Generation**: Replace Math.random() with crypto.randomBytes() for secure ID generation
+- **Affected Services**: SSHKeyManager, AuditLog, CodeSnippets, SSHTunnel, TerminalRecording, BoxApi
+
+### This is a fork with security fixes.
+
 ## [1.0.26] - 2026-04-08
 
 ### Security Fixes

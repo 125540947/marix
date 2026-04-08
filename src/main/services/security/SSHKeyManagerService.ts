@@ -1,5 +1,6 @@
 /**
  * SSH Key Manager Service
+import * as crypto from "crypto";
  * Manage SSH keys with encryption and audit
  */
 
@@ -59,7 +60,7 @@ class SSHKeyManagerService {
    * Generate new SSH key pair
    */
   async generateKey(name: string, options: KeyGenerationOptions): Promise<SSHKeyEntry> {
-    const id = `key_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+    const id = `key_${Date.now()}_${randomBytes(8).toString('hex')}`;
     
     // In production, would use ssh-keygen or node-keygen
     const keyPair = await this.generateKeyPair(options);
@@ -89,7 +90,7 @@ class SSHKeyManagerService {
    * Import existing SSH key
    */
   importKey(name: string, privateKey: string, passphrase?: string): SSHKeyEntry {
-    const id = `key_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+    const id = `key_${Date.now()}_${randomBytes(8).toString('hex')}`;
     
     // Extract public key (in production, would use ssh-keygen -y)
     const publicKey = this.extractPublicKey(privateKey);

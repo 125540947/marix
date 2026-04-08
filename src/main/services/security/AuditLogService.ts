@@ -1,5 +1,6 @@
 /**
  * Audit Log Service
+import * as crypto from "crypto";
  * Track all SSH operations and user activities
  */
 
@@ -68,7 +69,7 @@ class AuditLogService {
   log(entry: Omit<AuditEntry, 'id' | 'timestamp'>): AuditEntry {
     const auditEntry: AuditEntry = {
       ...entry,
-      id: `audit_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+      id: `audit_${Date.now()}_${randomBytes(8).toString('hex')}`,
       timestamp: Date.now(),
     };
 
