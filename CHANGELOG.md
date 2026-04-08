@@ -2,22 +2,49 @@
 
 All notable changes to Marix SSH Client will be documented in this file.
 
-## [1.0.23] - 2026-04-08
+## [1.0.24] - 2026-04-08
 
 ### Added
-- **Theme Cache**: Added in-memory cache for theme loading to improve performance
-  - Themes are now cached after first load, eliminating repeated file I/O
-  - Reduces disk reads on repeated theme switches
+- **Dropbox Cloud Support**: OAuth service and API for Dropbox backup integration
+- **Batch Import Service**: Import/export servers from CSV and JSON files
+- **Global Search Service**: Search across servers, groups, and tags with fuzzy matching
+- **Terminal Recording Service**: Record and replay terminal sessions
+- **SSH Tunnel Manager**: Graphical management of SSH port forwarding tunnels
+- **Theme Cache**: In-memory cache for theme loading performance
+
+### Features
+- **Batch Import**: 
+  - Import multiple servers from CSV/JSON
+  - Export servers to CSV/JSON
+  - Template generation for easy migration
+  
+- **Global Search**:
+  - Fuzzy search across all servers
+  - Search by name, host, username, group, tags, notes
+  - Quick search for fast lookup
+  
+- **Terminal Recording**:
+  - Record SSH sessions
+  - Playback with speed control
+  - Export to text for sharing
+  
+- **SSH Tunnels**:
+  - Visual port forwarding management
+  - Auto-reconnect support
+  - Traffic statistics
+
+- **Dropbox Backup**:
+  - OAuth 2.0 integration
+  - Upload/download/delete operations
+  - Backup metadata management
 
 ### Performance
-- **Theme Loading**: Optimized theme loading with Map-based cache
-  - First load: reads from disk
-  - Subsequent loads: served from memory cache
+- Theme loading now cached in memory
+- Reduced file I/O on repeated theme switches
 
-### Security
-- **Dependency Updates**: Updated all dependencies to latest stable versions
+### This is a fork with new features.
 
-## [1.0.22] - 2026-03-09
+## [1.0.23] - 2026-04-08
 
 ### Fixed
 - **RPM Install Conflict** (Issue [#12](https://github.com/marixdev/marix/issues/12)): Fixed RPM package conflicting with other Electron apps (e.g. Trilium) due to shared `.build-id` symlinks in `/usr/lib/.build-id/`
