@@ -264,10 +264,20 @@ class CodeSnippetsService {
     const template = this.templates.get(templateId);
     if (!template) return [];
 
+    // Validate variable names - only allow alphanumeric and underscore
+    for (const key of Object.keys(variables)) {
+      if (!/^[a-zA-Z][a-zA-Z0-9_]*$/.test(key)) {
+        console.warn(`[Snippets] Invalid variable name rejected: ${key}`);
+        throw new Error('Invalid variable name');
+      }
+    }
+
     return template.commands.map(cmd => {
       let rendered = cmd;
       for (const [key, value] of Object.entries(variables)) {
-        rendered = rendered.replace(new RegExp(`\\$\\{${key}\\}`, 'g'), value);
+        // Sanitize value - prevent command injection
+        const sanitized = value.replace(/[;&|`$]/g, '');
+        rendered = rendered.replace(new RegExp(`\\$\\{${key}\\}`, 'g'), sanitized);
       }
       return rendered;
     });

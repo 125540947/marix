@@ -50,7 +50,9 @@ class SSHKeyManagerService {
    * Set master key for encryption
    */
   setMasterKey(password: string): void {
-    this.masterKey = crypto.pbkdf2Sync(password, 'marix_salt', 100000, 32, 'sha256');
+    // Generate random salt per session
+    const salt = crypto.randomBytes(32);
+    this.masterKey = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha256');
   }
 
   /**

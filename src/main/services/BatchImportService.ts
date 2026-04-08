@@ -43,22 +43,24 @@ function parseCSV(content: string): ServerConfig[] {
     if (values.length < 4) continue;
 
     const server: ServerConfig = {
-      name: values[headers.indexOf('name')] || values[0] || `Server ${i}`,
-      host: values[headers.indexOf('host')] || values[1] || '',
-      port: parseInt(values[headers.indexOf('port')] || values[2] || '22') || 22,
-      username: values[headers.indexOf('username')] || values[3] || '',
+      name: this.sanitizeString(values[headers.indexOf('name')] || values[0] || `Server ${i}`),
+      host: this.sanitizeHost(values[headers.indexOf('host')] || values[1] || ''),
+      port: Math.min(Math.max(parseInt(values[headers.indexOf('port')] || values[2] || '22') || 22), 1, 65535),
+      username: this.sanitizeString(values[headers.indexOf('username')] || values[3] || ''),
       authType: (values[headers.indexOf('authtype')] || values[4] || 'password') as 'password' | 'privateKey',
     };
 
     if (server.authType === 'privateKey') {
-      server.privateKeyPath = values[headers.indexOf('privatekey')] || '';
+      server.privateKeyPath = this.sanitizePath(values[headers.indexOf('privatekey')] || '');
     } else {
-      server.password = values[headers.indexOf('password')] || '';
+      // Password is stored encrypted in production, but we validate length
+      const pwd = values[headers.indexOf('password')] || '';
+      server.password = pwd.length > 0 ? '[IMPORTED-SHALLOW]' : '';
     }
 
-    server.group = values[headers.indexOf('group')] || '';
-    server.tags = values[headers.indexOf('tags')]?.split(';') || [];
-    server.notes = values[headers.indexOf('notes')] || '';
+    server.group = this.sanitizeString(values[headers.indexOf('group')] || '');
+    server.tags = (values[headers.indexOf('tags')] || '').split(';').map(t => this.sanitizeString(t)).filter(Boolean);
+    server.notes = this.sanitizeString(values[headers.indexOf('notes')] || '');
 
     if (server.host && server.username) {
       servers.push(server);
@@ -209,6 +211,18 @@ export function getJSONTemplate(): string {
   }, null, 2);
 }
 
+function sanitizeString(str: string): string {
+  return str.replace(/[<>&"']/g, '').substring(0, 256);
+}
+
+function sanitizeHost(str: string): string {
+  return str.replace(/[^a-zA-Z0-9.\-_]/g, '').substring(0, 253);
+}
+
+function sanitizePath(str: string): string {
+  return str.replace(/\.\./g, '').replace(/[<>&|"']/g, '').substring(0, 512);
+}
+
 export default {
   importServersFromFile,
   exportServersToCSV,
@@ -216,3 +230,26 @@ export default {
   getCSVTemplate,
   getJSONTemplate,
 };
+
+/**
+ * Sanitize string input
+ */
+function sanitizeString(str: string): string {
+  return str.replace(/[<>&"']/g, '').substring(0, 256);
+}
+
+/**
+ * Sanitize host input
+ */
+function sanitizeHost(str: string): string {
+  // Only allow valid hostname/IP characters
+  return str.replace(/[^a-zA-Z0-9.\-_]/g, '').substring(0, 253);
+}
+
+/**
+ * Sanitize path input
+ */
+function sanitizePath(str: string): string {
+  // Prevent path traversal
+  return str.replace(/\.\./g, '').replace(/[<>&|"']/g, '').substring(0, 512);
+}

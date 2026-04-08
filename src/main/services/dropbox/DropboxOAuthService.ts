@@ -5,7 +5,7 @@ import * as crypto from 'crypto';
  * Handles OAuth 2.0 flow for Dropbox cloud storage
  */
 
-const DROPBOX_APP_KEY = 'your_app_key'; // Replace with actual app key
+const DROPBOX_APP_KEY = process.env.DROPBOX_APP_KEY || '';
 const DROPBOX_REDIRECT_URI = 'http://localhost:3001/oauth/dropbox';
 const DROPBOX_AUTH_URL = 'https://www.dropbox.com/oauth2/authorize';
 const DROPBOX_TOKEN_URL = 'https://api.dropboxapi.com/oauth2/token';

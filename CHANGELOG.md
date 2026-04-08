@@ -2,6 +2,17 @@
 
 All notable changes to Marix SSH Client will be documented in this file.
 
+## [1.0.26] - 2026-04-08
+
+### Security Fixes
+- **Dropbox App Key**: Use environment variable instead of hardcoded placeholder
+- **SSH Key Manager**: Generate random salt per session instead of fixed salt
+- **Template Injection**: Add variable name validation and value sanitization
+- **Batch Import**: Add input sanitization (host, username, path, notes)
+- **Port Validation**: Validate port range (1-65535)
+
+### This is a fork with security fixes.
+
 ## [1.0.25] - 2026-04-08
 
 ### Added - Security
