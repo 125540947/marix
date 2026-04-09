@@ -2,6 +2,21 @@
 
 All notable changes to Marix SSH Client will be documented in this file.
 
+## [1.0.28] - 2026-04-09
+
+### Added - Modular Architecture
+- **IPC Handler Registry**: Central registry for all IPC handlers
+- **Service Locator**: Central registry for all services
+- **Theme Manager**: Centralized theme loading with caching
+- **Config Manager**: Centralized configuration with validation
+
+### Refactoring
+- **Modules Directory**: New `src/main/modules/` for shared utilities
+- **Service Organization**: Better service discovery
+- **Config System**: Type-safe configuration with defaults
+
+### This is a fork with optimizations.
+
 ## [1.0.27] - 2026-04-08
 
 ### Security Fixes
