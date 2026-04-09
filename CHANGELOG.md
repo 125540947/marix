@@ -2,6 +2,20 @@
 
 All notable changes to Marix SSH Client will be documented in this file.
 
+## [1.0.29] - 2026-04-09
+
+### Added - Core Utilities
+- **Logger**: Centralized logging with levels (debug/info/warn/error), timestamps, colors
+- **Event Emitter**: Inter-module event system with typed events
+- **Utils**: Common helpers (string, array, object, date, validation, network, file)
+
+### New Modules
+- `Logger.ts` - Configurable logger with prefix support
+- `EventEmitter.ts` - Event bus with AppEvents, ServerEvents, BackupEvents
+- `Utils.ts` - 20+ utility functions
+
+### This is a fork with utilities.
+
 ## [1.0.28] - 2026-04-09
 
 ### Added - Modular Architecture
